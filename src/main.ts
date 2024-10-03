@@ -1,4 +1,5 @@
 import './style.css';
+import arrowIcon from '/src/downarrow.svg';
 
 type User = {
     id: number;
@@ -27,7 +28,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <label class="select-wrapper__label">Users</label>
     <button id="selectButton" class="select-button">
       <span>LastName FirstName, jobTitle</span>
-      <img src="/select-ts/src/downarrow.svg" alt="Icon" class="arrow" />
+      <img src="${arrowIcon}" alt="Icon" class="arrow" />
     </button>
     <ul id="dropdown" class="select-dropdown hidden">
     </ul>
