@@ -1,0 +1,15 @@
+(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const s of document.querySelectorAll('link[rel="modulepreload"]'))i(s);new MutationObserver(s=>{for(const n of s)if(n.type==="childList")for(const a of n.addedNodes)a.tagName==="LINK"&&a.rel==="modulepreload"&&i(a)}).observe(document,{childList:!0,subtree:!0});function o(s){const n={};return s.integrity&&(n.integrity=s.integrity),s.referrerPolicy&&(n.referrerPolicy=s.referrerPolicy),s.crossOrigin==="use-credentials"?n.credentials="include":s.crossOrigin==="anonymous"?n.credentials="omit":n.credentials="same-origin",n}function i(s){if(s.ep)return;s.ep=!0;const n=o(s);fetch(s.href,n)}})();const h="data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3csvg%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20129%20129'%20xmlns:xlink='http://www.w3.org/1999/xlink'%20enable-background='new%200%200%20129%20129'%3e%3cg%3e%3cpath%20d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2%200,5.8l53.9,53.9c0.8,0.8%201.8,1.2%202.9,1.2%201,0%202.1-0.4%202.9-1.2l53.9-53.9c1.7-1.6%201.7-4.2%200.1-5.8z'/%3e%3c/g%3e%3c/svg%3e";let u=1;const m=50,v=5e3;let d=!1;document.querySelector("#app").innerHTML=`
+  <div class="select-wrapper">
+    <label class="select-wrapper__label">Users</label>
+    <button id="selectButton" class="select-button">
+      <span>LastName FirstName, jobTitle</span>
+      <img src="${h}" alt="Icon" class="arrow" />
+    </button>
+    <ul id="dropdown" class="select-dropdown hidden">
+      <div id="loading" class="loading hidden">Загрузка...</div>
+    </ul>
+  </div>
+`;const c=document.getElementById("selectButton"),r=document.getElementById("dropdown"),w=c.querySelector("span"),p=document.getElementById("loading");let l=null;const y=async()=>{r.classList.toggle("hidden"),c.classList.toggle("active"),!l&&r.querySelectorAll(".dropdown-item").length===0&&(p.classList.remove("hidden"),await f(),p.classList.add("hidden"))},L=e=>{l&&l.classList.remove("selected"),e.classList.add("selected"),l=e;const t=e.querySelector("span");t&&(w.textContent=t.textContent,r.classList.add("hidden"),c.classList.remove("active"))},b=async(e,t)=>(await(await fetch(`https://frontend-test-middle.vercel.app/api/users?page=${e}&limit=${t}`)).json()).data,I=e=>{if(e.forEach(t=>{const o=document.createElement("li");o.className="dropdown-item",o.innerHTML=`
+      <div class="circle">${t.last_name.charAt(0)}</div>
+      <span>${t.last_name} ${t.first_name}, ${t.job||"No job title"}</span>
+    `,o.addEventListener("click",()=>L(o)),r.appendChild(o)}),e.length>0){const t=r.lastElementChild;t&&g.observe(t)}},f=async()=>{if(!d){d=!0;try{const e=await b(u,m);I(e),u++}catch(e){console.error("Ошибка при получении данных:",e)}finally{d=!1}}},g=new IntersectionObserver(e=>{e[0].isIntersecting&&u*m<v&&(g.unobserve(e[0].target),f())},{root:r,threshold:1});c.addEventListener("click",y);document.addEventListener("click",e=>{!c.contains(e.target)&&!r.contains(e.target)&&(r.classList.add("hidden"),c.classList.remove("active"),p.classList.add("hidden"))});
