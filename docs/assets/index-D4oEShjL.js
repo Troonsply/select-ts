@@ -3,7 +3,7 @@
     <label class="select-wrapper__label">Users</label>
     <button id="selectButton" class="select-button">
       <span>LastName FirstName, jobTitle</span>
-      <img src="src/downarrow.svg" alt="Icon" class="arrow" />
+      <img src="/select-ts/src/downarrow.svg" alt="Icon" class="arrow" />
     </button>
     <ul id="dropdown" class="select-dropdown hidden">
     </ul>
