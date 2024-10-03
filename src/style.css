@@ -60,11 +60,19 @@ ul {
   height: 32px;
 }
 
-.select-button:hover, .select-button:focus {
+.select-button:hover,
+.select-button:focus,
+.select-button.active {
   border-color: #4971FF;
-  border-radius: 0;
 }
-
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #3F4254;
+  font-size: 14px;
+}
 .arrow {
   margin-left: 10px;
   color: #3F4254;
@@ -74,7 +82,7 @@ ul {
 
 .select-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);;
   left: 0;
   width: 100%;
   max-height: 200px;
@@ -109,7 +117,7 @@ ul {
 }
 
 .dropdown-item:hover {
-  border: 2px solid#4971FF;
+  border: 2px solid #4971FF;
 }
 
 span {

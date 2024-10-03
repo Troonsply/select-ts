@@ -31,6 +31,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <img src="${arrowIcon}" alt="Icon" class="arrow" />
     </button>
     <ul id="dropdown" class="select-dropdown hidden">
+      <div id="loading" class="loading hidden">Загрузка...</div>
     </ul>
   </div>
 `;
@@ -38,13 +39,17 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 const selectButton = document.getElementById("selectButton") as HTMLElement;
 const dropdown = document.getElementById("dropdown") as HTMLElement;
 const selectButtonText = selectButton.querySelector("span") as HTMLElement;
+const loading = document.getElementById("loading") as HTMLElement;
 
 let selectedItem: HTMLElement | null = null;
 
 const toggleDropdown = async () => {
     dropdown.classList.toggle("hidden");
-    if (!selectedItem && dropdown.childElementCount === 0) { // Загрузить первый набор данных при первом открытии
+    selectButton.classList.toggle("active");
+    if (!selectedItem && dropdown.querySelectorAll(".dropdown-item").length === 0) { // Загрузить первый набор данных при первом открытии
+        loading.classList.remove("hidden");
         await fetchAndAppendUsers();
+        loading.classList.add("hidden");
     }
 };
 
@@ -60,6 +65,7 @@ const selectItem = (item: HTMLElement) => {
 
     selectButtonText.textContent = span.textContent;
     dropdown.classList.add("hidden");
+    selectButton.classList.remove("active");
 };
 
 const fetchUsers = async (page: number, limit: number): Promise<User[]> => {
@@ -105,7 +111,7 @@ const fetchAndAppendUsers = async () => {
 
 const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && currentPage * limit < totalUsers) {
-        observer.unobserve(entries[0].target); // Отключаем наблюдение за текущим элементом
+        observer.unobserve(entries[0].target);
         fetchAndAppendUsers();
     }
 }, {
@@ -114,3 +120,10 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 selectButton.addEventListener("click", toggleDropdown);
+document.addEventListener('click', (event) => {
+    if (!selectButton.contains(event.target as Node) && !dropdown.contains(event.target as Node)) {
+        dropdown.classList.add("hidden");
+        selectButton.classList.remove("active");
+        loading.classList.add("hidden");
+    }
+});
