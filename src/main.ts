@@ -11,9 +11,9 @@ type User = {
 type Response = {
     data: User[];
     meta: {
-        from: number; // порядковый номер первого возвращаемого элемента
-        to: number; // порядковый номер последнего возвращаемого элемента
-        total: number; // общее количество данных
+        from: number;
+        to: number;
+        total: number;
     };
 }
 
